@@ -9,7 +9,7 @@ import javax.persistence.*
 data class Person(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
+    val id: Long,
 
     @Column(nullable = false)
     val name: String
@@ -20,7 +20,7 @@ data class Person(
 data class Task(
     @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long? = null,
+        val id: Long,
     val title: String,
     val description: String? = null,
     val startDate: Date? = null,

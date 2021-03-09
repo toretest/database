@@ -3,6 +3,7 @@ package net.toregard.database.rest
 import net.toregard.database.model.Person
 import net.toregard.database.repositories.PersonRepository
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import kotlin.random.Random
@@ -13,8 +14,7 @@ import kotlin.random.Random
 class AppsController(val personRepository: PersonRepository
 ) {
     @GetMapping
-        fun get(): ResponseEntity<Any?> {
-    personRepository.save(Person(0,"name1"+ Random(100).toString()))
+    fun get(): ResponseEntity<Any?> {
     return ResponseEntity(personRepository.findAll(), HttpStatus.OK)
     }
 
@@ -24,17 +24,18 @@ class AppsController(val personRepository: PersonRepository
     return ResponseEntity(personRepository.findAll(), HttpStatus.OK)
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}"
+        )
     fun update(
         @PathVariable(value = "id") id : Long,
-        @RequestBody person : Person)
+        @RequestBody newPerson : Person)
     : ResponseEntity<Person> =
         personRepository.findById(id).map {
             currentPerson ->
             val updatePerson: Person =
                 currentPerson
                     .copy(
-                        name = "name"+ Random(4000).toString()
+                        name = newPerson.name
                     )
             ResponseEntity.ok().body(personRepository.save(updatePerson))
         }.orElse(ResponseEntity.notFound().build())
